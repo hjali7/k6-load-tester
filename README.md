@@ -21,3 +21,16 @@ docker run --rm \
   -e BODY='{"user":"test"}' \
   -e SLEEP=0.5 \
   web-load-tester:latest
+
+ورود لیست URL
+با ENV:
+-e URLS='["https://site1.com/api","https://site2.com/api"]'
+
+با فایل CSV:
+-e CSV_PATH=/data/urls.csv
+(Mount /data/urls.csv inside Docker)
+
+با فایل JSON:
+-e JSON_PATH=/data/urls.json
+(Mount /data/urls.json inside Docker)
+
