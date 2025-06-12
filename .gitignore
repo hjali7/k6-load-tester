@@ -1,0 +1,10 @@
+# Python, Node, Go, Docker, Helm, OS files
+__pycache__/
+node_modules/
+.env
+*.pyc
+*.log
+*.tgz
+.DS_Store
+.idea/
+.vscode/
