@@ -1,0 +1,48 @@
+# Default values for web-load-tester
+replicaCount: 1
+
+image:
+  repository: k6-load-tester
+  tag: latest
+  pullPolicy: IfNotPresent
+
+config:
+  # Target URL or list of URLs
+  targetUrl: "https://httpbin.org/post"
+  urls: []  # List of URLs to test
+  csvPath: ""  # Path to CSV file with URLs
+  jsonPath: ""  # Path to JSON file with URLs
+  
+  # Test configuration
+  virtualUsers: 20
+  duration: "1m"
+  method: "POST"
+  headers: '{"Content-Type":"application/json"}'
+  body: '{"user":"test"}'
+  sleep: 0.5
+
+  # Advanced configuration
+  thresholds:
+    http_req_duration: ["p(95)<500"]  # 95% of requests should be below 500ms
+    http_req_failed: ["rate<0.01"]    # Less than 1% of requests should fail
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Storage configuration for results
+persistence:
+  enabled: false
+  storageClass: ""
+  size: 1Gi
+  accessMode: ReadWriteOnce 

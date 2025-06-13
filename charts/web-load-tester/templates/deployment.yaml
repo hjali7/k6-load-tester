@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "web-load-tester.fullname" . }}
+  labels:
+    {{- include "web-load-tester.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "web-load-tester.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "web-load-tester.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: TARGET_URL
+              value: {{ .Values.config.targetUrl | quote }}
+            - name: VUS
+              value: {{ .Values.config.virtualUsers | quote }}
+            - name: DURATION
+              value: {{ .Values.config.duration | quote }}
+            - name: METHOD
+              value: {{ .Values.config.method | quote }}
+            - name: HEADERS
+              value: {{ .Values.config.headers | quote }}
+            - name: BODY
+              value: {{ .Values.config.body | quote }}
+            - name: SLEEP
+              value: {{ .Values.config.sleep | quote }}
+            {{- if .Values.config.urls }}
+            - name: URLS
+              value: {{ .Values.config.urls | toJson | quote }}
+            {{- end }}
+            {{- if .Values.config.csvPath }}
+            - name: CSV_PATH
+              value: {{ .Values.config.csvPath | quote }}
+            {{- end }}
+            {{- if .Values.config.jsonPath }}
+            - name: JSON_PATH
+              value: {{ .Values.config.jsonPath | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: results
+              mountPath: /scripts/results
+          {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: results
+          persistentVolumeClaim:
+            claimName: {{ include "web-load-tester.fullname" . }}-pvc
+      {{- end }} 
