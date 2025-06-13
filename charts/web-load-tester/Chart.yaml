@@ -5,12 +5,12 @@ type: application
 version: 0.1.0
 appVersion: "0.45.0"
 maintainers:
-  - name: Your Name
-    email: your.email@example.com
+  - name: hjali7
+    email: hjali7@example.com
 keywords:
   - load-testing
   - k6
   - performance-testing
-home: https://github.com/yourusername/web-load-tester
+home: https://github.com/hjali7/k6-load-tester
 sources:
-  - https://github.com/yourusername/web-load-tester 
+  - https://github.com/hjali7/k6-load-tester

@@ -9,10 +9,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Needed to push tags and index.yaml
+      packages: write # Needed to push OCI charts
+      id-token: write # Needed for keyless signing
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated to v4
         with:
           fetch-depth: 0
 
@@ -21,9 +23,16 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Install Helm
+        uses: azure/setup-helm@v3 # Using a specific action to install Helm
+        with:
+          version: 'latest' # Or specify a version like 'v3.12.0'
+
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@v1.6.0 # Updated to v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        with:
-          config: cr.yaml 
+        # with: # 'with' block is commented out as 'config' is not a standard input for chart-releaser-action v1.6.0 directly.
+          # config: cr.yaml # Configuration is typically handled by cr.yaml in the repo root or by command-line arguments if needed.
+                          # If cr.yaml is in a different location or has a different name, adjust paths or use flags in chart-releaser arguments.
+                          # The chart-releaser action will automatically look for cr.yaml in the root.
