@@ -1,52 +1,29 @@
-name: Publish to Artifact Hub
+name: Release Charts
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'charts/**'
-      - '.github/workflows/artifacthub.yml'
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
         with:
-          version: v3.12.0
+          fetch-depth: 0
 
-      - name: Package Helm chart
+      - name: Configure Git
         run: |
-          helm package charts/web-load-tester
-          helm repo index .
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Create Artifact Hub repository
-        run: |
-          curl -X POST \
-            -H "X-API-KEY: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "name": "k6-load-tester",
-              "displayName": "K6 Load Tester",
-              "url": "https://github.com/hjali7/k6-load-tester",
-              "kind": "helm",
-              "private": false,
-              "verifiedPublisher": false,
-              "organizationName": "hjali7",
-              "organizationDisplayName": "HajAli",
-              "userAlias": "hjali7"
-            }' \
-            https://artifacthub.io/api/v1/repositories || true
-
-      - name: Upload chart to Artifact Hub
-        run: |
-          curl -X POST \
-            -H "X-API-KEY: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=" \
-            -H "Content-Type: application/json" \
-            -d @charts/web-load-tester/artifacthub-pkg.yml \
-            https://artifacthub.io/api/v1/packages/helm/hjali7/k6-load-tester 
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          config: cr.yaml 
