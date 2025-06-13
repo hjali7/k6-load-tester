@@ -23,7 +23,8 @@ jobs:
 
       - name: Publish to Artifact Hub
         run: |
-          curl -X POST https://artifacthub.io/api/v1/packages/helm/hjali7/web-load-tester \
+          curl -X POST https://artifacthub.io/api/v1/packages/helm/hjali7/web-load-tester/version \
             -H "X-API-KEY-ID: ${{ secrets.ARTIFACTHUB_API_KEY }}" \
             -H "X-API-KEY-SECRET: ${{ secrets.ARTIFACTHUB_API_KEY_SECRET }}" \
-            -F "package=@charts/web-load-tester-*.tgz" 
+            -H "Content-Type: application/gzip" \
+            --data-binary "@charts/web-load-tester-*.tgz" 
