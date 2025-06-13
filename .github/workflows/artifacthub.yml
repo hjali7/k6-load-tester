@@ -25,12 +25,10 @@ jobs:
           helm package charts/web-load-tester
           helm repo index .
 
-      - name: Publish to Artifact Hub
-        env:
-          AH_API_KEY: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=
+      - name: Create Artifact Hub repository
         run: |
           curl -X POST \
-            -H "X-API-KEY: $AH_API_KEY" \
+            -H "X-API-KEY: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=" \
             -H "Content-Type: application/json" \
             -d '{
               "name": "k6-load-tester",
@@ -43,4 +41,12 @@ jobs:
               "organizationDisplayName": "HajAli",
               "userAlias": "hjali7"
             }' \
-            https://artifacthub.io/api/v1/repositories 
+            https://artifacthub.io/api/v1/repositories || true
+
+      - name: Upload chart to Artifact Hub
+        run: |
+          curl -X POST \
+            -H "X-API-KEY: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=" \
+            -H "Content-Type: application/json" \
+            -d @charts/web-load-tester/artifacthub-pkg.yml \
+            https://artifacthub.io/api/v1/packages/helm/hjali7/k6-load-tester 
