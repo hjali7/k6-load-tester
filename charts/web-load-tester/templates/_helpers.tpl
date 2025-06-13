@@ -48,4 +48,15 @@ Selector labels
 {{- define "web-load-tester.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "web-load-tester.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }} 
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "web-load-tester.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "web-load-tester.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

@@ -11,14 +11,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
+
       - name: Package Helm chart
         run: |
-          helm package helm/web-load-tester
-          mv web-load-tester-*.tgz helm/
+          helm package charts/web-load-tester
+          mv web-load-tester-*.tgz charts/
 
       - name: Publish to Artifact Hub
         run: |
           curl -X POST https://artifacthub.io/api/v1/packages/helm/hjali7/web-load-tester \
             -H "X-API-KEY-ID: ${{ secrets.ARTIFACTHUB_API_KEY }}" \
             -H "X-API-KEY-SECRET: ${{ secrets.ARTIFACTHUB_API_KEY_SECRET }}" \
-            -F "package=@helm/web-load-tester-*.tgz" 
+            -F "package=@charts/web-load-tester-*.tgz" 
