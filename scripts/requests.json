@@ -1,0 +1,14 @@
+[
+    {
+      "url": "https://httpbin.org/get",
+      "method": "GET",
+      "headers": { "X-Token": "abc" }
+    },
+    {
+      "url": "https://httpbin.org/post",
+      "method": "POST",
+      "headers": { "Content-Type": "application/json" },
+      "body": "{\"user\":\"ali\"}"
+    }
+  ]
+  

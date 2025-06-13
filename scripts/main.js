@@ -1,6 +1,6 @@
 import { getConfig } from './config.js';
 import { runScenario } from './runner.js';
-import { handleSummary } from './report.js';
+import { handleSummary as reportSummary } from './report.js';
 
 let results = [];
 let config = getConfig();
@@ -15,5 +15,5 @@ export default function () {
 }
 
 export function handleSummary(data) {
-  return handleSummary(data);
+  return reportSummary(data);
 }
