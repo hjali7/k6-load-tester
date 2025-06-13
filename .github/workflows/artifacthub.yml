@@ -23,7 +23,7 @@ jobs:
       - name: Run Artifact Hub Publisher
         uses: artifacthub/artifacthub-publisher@v1
         with:
-          ah_api_key: ${{ secrets.ARTIFACT_HUB_API_KEY }}
+          ah_api_key: lUp8P9QPOLAd0mrm7epiaK/ApcmmMLA9p2mNymRvbDE=
           ah_repo_name: k6-load-tester
           ah_repo_kind: helm
           ah_repo_url: https://github.com/hjali7/k6-load-tester
