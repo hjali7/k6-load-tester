@@ -1,0 +1,10 @@
+repositoryID: 00000000-0000-0000-0000-000000000000
+name: k6-load-tester
+displayName: K6 Load Tester
+url: https://github.com/hjali7/k6-load-tester
+private: false
+kind: helm
+verifiedPublisher: false
+organizationName: hjali7
+organizationDisplayName: HajAli
+userAlias: hjali7 
