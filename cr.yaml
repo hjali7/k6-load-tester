@@ -1,0 +1,6 @@
+owner: hjali7
+git-repo: k6-load-tester
+package-path: charts
+index-path: charts/index.yaml
+pages-branch: gh-pages
+charts-repo: https://hjali7.github.io/k6-load-tester 
